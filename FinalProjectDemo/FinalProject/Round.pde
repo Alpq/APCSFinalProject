@@ -1,10 +1,10 @@
 public class Round {
-  ArrayList<Human> crowd;
-  Human Player2;
-  int time;
-  int framerate;
-  color background;
-  int difficulty;
+  private ArrayList<Human> crowd;
+  private Human Player2;
+  private int time;
+  private int framerate;
+  private int difficulty;
+  boolean isGameStarted  = false;
   
   Round(int howHard, int framer) {
     framerate = framer;
@@ -32,6 +32,13 @@ public class Round {
     if (time <= 0) {return 2;}
     if (Player2.getClicked()) {return 1;}
     return 0;
+  }
+  void showSeeker()
+  {
+    background(0);
+    fill(255);
+    circle(Player2.getX(), Player2.getY() + Player2.getHeight() /3, Player2.getHeight() + Player2.getWidth());
+    Player2.display();
   }
   void display(){
     if (gameOver() == 0)
@@ -90,5 +97,8 @@ public class Round {
     Player2.move(3);
     break;
     }
+  }
+  int getTime(){
+    return time;
   }
 }

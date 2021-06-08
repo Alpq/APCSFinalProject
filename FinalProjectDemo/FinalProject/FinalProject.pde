@@ -10,7 +10,8 @@ void setup() {
 
 void draw() {
   background(250);
-  Game.display();
+  if (!Game.isGameStarted) {Game.showSeeker();}
+  if (Game.isGameStarted) {Game.display();}
 }
 
 void mousePressed() {
@@ -19,6 +20,7 @@ void mousePressed() {
 
 void keyPressed() {
   Game.movePlayer();
+  Game.isGameStarted = true;
 }
 
 
