@@ -1,4 +1,5 @@
 public class Angel extends Human{
+  private boolean clicked;
     Angel()
     {
       super();
@@ -10,6 +11,7 @@ public class Angel extends Human{
     }
   }
   boolean isPrayed(Human other){
-    return dist(getX(), getY(),other.getX(), other.getY()) < 30;
+    if (dist(getX(), getY(),other.getX(), other.getY()) < 30) {clicked = true; return true;};
+    return false;
   }
 }

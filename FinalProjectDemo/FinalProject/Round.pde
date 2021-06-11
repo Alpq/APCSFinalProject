@@ -69,17 +69,17 @@ public class Round {
     Player2.photo = loadImage("4.png");
     switch (howHard) {
       case 0:
-        time = 2000;
+        time = 100 * framerate;
         for (int i = 0; i < 100; i++)
           crowd.add(new Human());
         break;
       case 1:
-        time = 1200;
+        time = 60 * framerate;
         for (int i = 0; i < 150; i++)
           crowd.add(new Human());
         break;
       case 2:
-        time = 600;
+        time = 30 * framerate;
         for (int i = 0; i < 200; i++)
           crowd.add(new Human());
         break;
@@ -147,7 +147,7 @@ public class Round {
       nukes.get(i).click();
       if (nukes.get(i).getClicked()) {
         {
-          for (int j = 0; j < crowd.size() / 10; j++) {
+          for (int j = 0; j < crowd.size() / 5; j++) {
             crowd.remove(0);
           }
           nukes.remove(0);
@@ -156,19 +156,14 @@ public class Round {
     }
   }
   void spawn() {
-    if (difficulty > 0 && angels.size() >= 3){
-      for (int i = 0 ; i < 4; i ++)
-        if (angels.get(i).isPrayed(Player2)) {
-        for (int i = 0; i < 4; i++) {
-        angels.remove(0);
-        for (int j = 0; j < crowd.size() / 5; j++) {
-          crowd.add(new Human());
+    if (difficulty > 0){
+      for (int i = 0; i < angels.size(); i ++)
+      {
+        if (angels.get(i).isPrayed(Player2))
+        {crowd.add(new Human()); angels.remove(i);}
         }
       }
     }
-  }
-    
-  }
   void eliminate() {
     for (int i = 0; i < crowd.size(); i++) {
       crowd.get(i).click();
@@ -192,8 +187,8 @@ public class Round {
     textSize(26);
     fill(0);
     text(time / framerate, 75, 75);
-    if (difficulty > 0) {text(angels.size() + " ANGELS REMAINING", 75, 110);}
-        if (difficulty > 0) {text(crowd.size() + " PEOPLE REMAINING", 75, 150);}
+    //if (difficulty > 0) {text(angels.size() + " ANGELS REMAINING", 75, 110);}
+        //if (difficulty > 0) {text(crowd.size() + " PEOPLE REMAINING", 75, 150);}
 
   }
 
@@ -207,7 +202,7 @@ public class Round {
 
   void displayAngels() {
     if (angels.size() >= 4)
-      for (int i = 0; i < 4; i++) {
+      for (int i = 0; i < 5; i++) {
         angels.get(i).display();
       }
   }
@@ -218,10 +213,10 @@ public class Round {
     if (gameOver() == 0) {
       drawWalls();
       displayText();
-      if (time % 501 < 100 && difficulty > 0) {
+      if (time % 501 > 250 && difficulty > 0) {
         displayNukes();
       }
-      if (time % 501 < 400 && difficulty > 0) {
+      if (time % 501 > 400 && difficulty > 0) {
         displayAngels();
       }
       displayPeople();

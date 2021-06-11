@@ -1,7 +1,7 @@
 Round game;
 
 void setup() {
-  int framerate = 20;
+  int framerate = 60;
   frameRate(framerate);
   size(1000, 800);
   game = new Round(framerate);
