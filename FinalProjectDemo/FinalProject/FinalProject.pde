@@ -1,43 +1,51 @@
-Round Game;
-int framerate;
+Round game;
 
 void setup() {
-  framerate = 20;
+  int framerate = 20;
   frameRate(framerate);
   size(1000, 800);
-  Game = new Round(1, framerate);
+  game = new Round(framerate);
 }
 
 void draw() {
-  background(250);
-  if (!Game.isGameStarted) {Game.showSeeker();}
-  if (Game.isGameStarted) {Game.display();}
-}
-
-void mousePressed() {
-  Game.checkClicks();
+  background(245,222,179);
+  int phase = game.getPhase();
+  switch (phase) {
+    case -1:
+    game = new Round(20); 
+    break;
+    case 0:
+      game.displayDifficultySelection();
+      break;
+    case 1:
+      game.showSeeker();
+      break;
+    case 2:
+      game.display();
+      break;
+    case 3:
+      game.endDisplay();
+      
+  }
 }
 
 void keyPressed() {
-  Game.movePlayer();
-  Game.isGameStarted = true;
-}
-
-
-/*
-  noLoop();
-  background(255);
-  Player2.display();
-  loop();
-  text(String.valueOf(time), 10, 10);
-  background(200);
-  frameRate(10);
-  Player2.display();
-    for (Human c : crowd) {
-    c.move(4);
-    c.display();
+  if (game.getPhase() == 1) {
+    game.showSeekerPress();
   }
-  time --;
-
-
-*/
+  else if (game.getPhase() == 2) {
+    game.movePlayer();
+    game.spawn();
+  }
+}
+void mousePressed() {
+  if (game.getPhase() == 0) {
+      game.difficultyButtonsClick();
+    }
+  else if (game.getPhase() == 2) {
+      game.checkClicks();
+    }
+  else if (game.getPhase() == 3) {
+      game.playAgainClick();
+    }
+}

@@ -3,55 +3,82 @@ public class Human {
   private color c;
   private boolean clicked;
   private int mHeight, mWidth;
-  {
-    c = color((int)(Math.random() * 255), (int)(Math.random() * 255), (int)(Math.random() * 255) );
-    x = (int) (Math.random() * (width + 1));
-    y = (int) (Math.random() * (height + 1));
+  private int pastMove;
+  PImage photo = loadImage((int)(Math.random() * 4) + ".png");
+
+  Human() {
+    mHeight = 80;
+    mWidth =  30;
+    c = color((int)(Math.random() * 255), (int)(Math.random() * 255), (int)(Math.random() * 255)); 
+    x = (int)(Math.random() * (width - mWidth)) + 100;
+    y = (int)(Math.random() * (height - mHeight)) + 100 + mHeight;
     clicked = false;
-    mHeight = 60;
-    mWidth = 30;
-  }
-  void move(int direction)
-  {
-    int[] moves = {0, 1, 2, 3};
-    int move = moves[(int) (Math.random() * 4)];
-    if (direction != 4) {move = direction;}
-    
-    switch (move) {
-    case 0:
-    y -= 10;
-    break;
-    case 1:
-    y += 10;
-    break;
-    case 2:
-    x -= 10;
-    break;
-    case 3:
-    x += 10;
+    while (wrong()) {
+      this.x = new Human().getX();
+      this.y = new Human().getY();
     }
   }
-  void display(){
-    if (!clicked){
-    fill(c);
-    line(x, y, x, y + mHeight - 20);
-    circle(x, y, 25);
-    line(x, y + mHeight - 20, x - 15, y + mHeight);
-    line(x, y + mHeight - 20, x + 15, y + mHeight);
-    line(x, y + mWidth/2, x - mWidth/2, y + 30);
-    line(x, y + mWidth/2, x + mWidth/2, y + 30);
+  void move(int direction) {
+    int dy = 0;
+    int dx = 0;
+    int moves[] = {0, 1, 2, 3, 4};
+    int move = moves[(int)(Math.random()* 4)];
+    if (Math.random() < .5) {move = pastMove;}
+    if (direction != 5) {move = direction;}
+    pastMove = move;
+      switch (move) {
+      case 0:
+        dy = -5;
+        break;
+      case 1:
+        dy = 5;
+        break;
+      case 2:
+        dx = -5;
+        break;
+      case 3:
+        dx = 5;
+        break;
+    }
+    x += dx;
+    y += dy;
+    if (wrong()) {
+      x -= dx;
+      y -= dy;
     }
   }
-  void click(){
-    if((mouseX >= this.x - mWidth/2 && mouseX <= this.x + mWidth/2) && (mouseY >= this.y - 25 && mouseY <= this.y + mHeight)){
-    clicked = true;
+  boolean wrong() {
+    return  x < 50 || x >= width - 50 || y < 50 || y >= height - 50 ||
+            x + mWidth >= width - 50 || y + mHeight >= height - 50;
+  }
+  void display() {
+    if (!clicked) {
+      tint(c);
+      image(photo, x, y, mWidth, mHeight);
     }
   }
-  boolean getClicked(){
-  return clicked;
+  
+  void click() {
+    if ((mouseX >= this.x && mouseX <= this.x + mWidth) && (mouseY >= this.y && mouseY <= this.y + mHeight)) {
+      clicked = true;
+    }
   }
-  int getX() {return x;}
-  int getY() {return y;}
-  int getWidth() {return mWidth;} 
-  int getHeight() {return mHeight;}
+  void setColor(color cc){
+    c = cc;
+  }
+  boolean getClicked() {
+    return clicked;
+  }
+  int getX() {
+    return x;
+  }
+  int getY() {
+    return y;
+  }
+  int getWidth() {
+    return mWidth;
+  }
+  int getHeight() {
+    return mHeight;
+  }
 }
